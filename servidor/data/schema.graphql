@@ -1,0 +1,150 @@
+# ESTO ES GRAPHQL
+
+    type Cliente {
+        id : ID
+        nombre: String
+        apellido: String
+        empresa: String
+        emails: [Email]
+        edad: Int
+        tipo: TipoCliente
+        #pedidos: [Pedido]
+    }
+    #type Pedido {
+    #    producto: String
+    #    precio: Int
+    #}
+    type Email {
+        email: String
+    }
+    type Producto {
+        id : ID
+        nombre: String
+        precio: Int
+        stock: Int
+    }
+    type PedidoProducto {
+        id: ID
+        cantidad: Int
+    }
+    type Pedido {
+        id: ID
+        pedido: [PedidoProducto]
+        total: Int
+        fecha: String
+        cliente: ID
+        estado: EstadoPedido
+    }
+    type ClienteTotal {
+        total: Float
+        cliente: [Cliente]
+    }
+    type VendedorTotal {
+        total: Float
+        vendedor: [Usuario]
+    }
+    type Token {
+        token: String!
+    }
+    type Usuario {
+        usuario: String
+        id: ID
+        nombre: String
+        rol: String
+    }
+    """ Asigna la categoria del cliente """
+    enum TipoCliente {
+        BASICO
+        PREMIUM
+    }
+    enum EstadoPedido {
+        PENDIENTE
+        COMPLETADO
+        CANCELADO
+    }
+    type Query {
+        # Clientes
+        # nos va a retornar un arreglo de clientes
+        getClientes(limite: Int, offset: Int, vendedor: String) : [Cliente]
+        getCliente(id: ID) : Cliente
+        # Obtener el total de registros de la tabla Clientes de la BDs Mongo
+        totalClientes(vendedor: String) : String
+
+        # Productos
+        # nos va a retornar un arreglo de Productos
+        obtenerProductos(limite: Int, offset: Int, stocks: Boolean) : [Producto]
+        obtenerProducto(id: ID!) : Producto
+        totalProductos : String
+
+        # Pedidos
+        # nos va a retornar un arreglo de pedidos
+        obtenerPedidos(cliente: String) : [Pedido]
+
+        # Graficas
+        topClientes : [ClienteTotal]
+        topVendedores : [VendedorTotal]
+
+        # Usuario
+        obtenerUsuario : Usuario
+    }
+    input EmailInput {
+        email: String
+    }
+    #input PedidoInput {
+    #    producto: String
+    #    precio: Int
+    #}
+    """ Campos para los clientes nuevos """
+    input ClienteInput {
+        id : ID
+        nombre: String!
+        apellido: String!
+        empresa: String!
+        emails: [EmailInput]
+        edad: Int!
+        tipo: TipoCliente!
+        pedidos: [PedidoInput]
+        vendedor: ID
+    }
+
+    input ProductoInput {
+        id: ID
+        nombre: String!
+        precio: Int!
+        stock: Int!
+    }
+
+    input PedidoProductoInput {
+        id: ID
+        cantidad: Int
+    }
+    
+    input PedidoInput {
+        id: ID
+        pedido: [PedidoProductoInput]
+        total: Int
+        fecha: String
+        cliente: ID
+        estado: EstadoPedido
+        vendedor: ID
+    }
+
+    """ Mutations para crear nuevos clientes """
+    type Mutation {
+        #Nombre del Resolver, Input con Datos y valor que retorna
+        """ Te permite crear nuevos clientes """
+        crearCliente(input: ClienteInput) : Cliente
+        actualizarCliente(input: ClienteInput) : Cliente
+        eliminarCliente(id: ID!) :  String
+        # Productos
+        nuevoProducto(input: ProductoInput) : Producto
+        actualizarProducto(input: ProductoInput) : Producto
+        eliminarProducto(id: ID!) : String
+        # Pedidos
+        nuevoPedido(input: PedidoInput) : Pedido
+        actualizarEstado(input : PedidoInput): String
+
+        # Usuarios
+        crearUsuario(usuario: String!, nombre: String!, password: String!, rol: String!) : String
+        autenticarUsuario(usuario: String!, password: String!): Token
+    }

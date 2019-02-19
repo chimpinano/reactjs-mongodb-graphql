@@ -1,0 +1,40 @@
+.resaltar-texto {
+    background-color: #2C3E50;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: .3rem;
+}
+
+.inc-texto {
+    font-size: 1.1rem;
+}
+
+.contenedor-productos {
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.border-success {
+    border-top: .5rem solid #18BC9C!important;
+    border-radius: 0!important;
+}
+
+.border-danger {
+    border-top: .5rem solid #E74C3C!important;
+    border-radius: 0!important;
+}
+
+.bg-light {
+    border-top: .5rem solid #ECF0F1!important;
+    border-radius: 0!important;
+}
+
+.bg-amarillo {
+    background-color: #FFEB3B;
+    color: black;
+}
+/*
+.card {
+    border-width: 4px;
+}
+*/
